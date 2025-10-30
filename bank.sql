@@ -108,5 +108,15 @@ join bankacc b on d.accno=b.accno
 join branch a on b.branch_name=a.branch_name
 where a.branch_city = 'delhi';
 
-select customer_name from borrower
-where customer_name not in (select customer_name from bankcust);
+SELECT customer_name
+FROM borrower  
+WHERE customer_name NOT IN (
+    SELECT customer_name
+    FROM bankcust
+);
+SELECT DISTINCT b.customer_name
+FROM bankcust b
+WHERE b.customer_name NOT IN (
+    SELECT customer_name
+    FROM borrower
+);
