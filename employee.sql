@@ -39,7 +39,7 @@ INSERT INTO dept VALUES
 (30, 'HR', 'Delhi'),
 (40, 'IT', 'Hyderabad'),
 (50, 'Admin', 'Chennai'),
-(60, 'Research', 'Pune');
+(60, 'Research', 'Mysore');
 
 INSERT INTO employee VALUES
 (101, 'Arjun',   0, '2022-05-10', 45000, 10),
@@ -55,22 +55,16 @@ INSERT INTO project VALUES
 (3, 'Chennai', 'HRPortal'),
 (4, 'Delhi', 'CRMSystem'),
 (5, 'Hyderabad', 'Inventory'),
-(6, 'Pune', 'AIResearch');
+(6, 'Mysore', 'AIResearch');
 
-update dept 
-set dloc = 'Mysore'
-where deptno = 60;
 
 INSERT INTO incentives VALUES
 (101, '2024-01-15', 5000),
 (102, '2024-03-10', 3000),
 (103, '2024-05-20', 2500),
 (104, '2024-07-05', 6000),
-(105, '2024-08-25', 4000),
 (106, '2024-09-30', 3500);
 
-delete from incentives
-where empno = 105;
 
 INSERT INTO asg_to VALUES
 (101, 1, 'Team Lead'),
@@ -88,10 +82,12 @@ where p.ploc in ("Mysore","Bangalore","Hyderabad");
 
 SELECT e.empno, e.ename
 FROM employee e
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM incentives i
-    WHERE i.empno = e.empno
-);
+LEFT JOIN incentives i ON e.empno = i.empno
+WHERE i.empno IS NULL;
 
-
+select e.ename,e.empno,e.deptno,a.job_role,d.dloc,p.ploc
+from employee e
+join dept d on e.deptno=d.deptno
+join asg_to a on e.empno = a.empno
+join project p on a.pno=p.pno
+where d.dloc = p.ploc;
